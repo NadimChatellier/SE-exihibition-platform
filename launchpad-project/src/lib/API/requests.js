@@ -6,7 +6,7 @@ const API_KEY = process.env.NEXT_PUBLIC_HARVARD_API_KEY || "57bea388-3f95-4dc3-b
 
 export function fetchHarvardArtworks(page = 1, size = 20) {
   return axios
-    .get(`https://api.harvardartmuseums.org/object`, {
+    .get("https://api.harvardartmuseums.org/object", {
       params: {
         apikey: API_KEY,
         page,
@@ -17,22 +17,27 @@ export function fetchHarvardArtworks(page = 1, size = 20) {
     })
     .then((res) => {
       const records = res.data.records.map(normalizeHarvard);
-      return { records };
+      return { records, total: res.data.info.totalRecords }; // Include total records for pagination
     })
     .catch((err) => {
       console.error("Error fetching Harvard artworks:", err.message);
-      return { records: [] };
+      return { records: [], total: 0 }; // Include total as 0 in case of error
     });
 }
 
 
-export function fetchVandAArtworks(page = 1, size = 50) {
-  const url = `https://api.vam.ac.uk/v2/objects/search?q=Bed Ware&page_size=${size}&page=${page}`;
+export function fetchVandAArtworks(page = 1, size = 50, query = "") {
+  const baseUrl = "https://api.vam.ac.uk/v2/objects/search";
+  const url = `${baseUrl}?q=${encodeURIComponent(query)}&page_size=${size}&page=${page}`;
+
   return axios
     .get(url)
     .then((res) => {
       const records = res.data.records.map(normalizeVandA);
-      return { records };
+      return {
+        records,
+        total: res.data.info.hits || 0, // you might use this later for total pages
+      };
     })
     .catch((err) => {
       console.error("Error fetching V&A artworks:", err.message);
@@ -40,21 +45,23 @@ export function fetchVandAArtworks(page = 1, size = 50) {
     });
 }
 
-export function fetchBritishMuseumArtworks() {
-  const API_KEY = " hictaiev"; 
+
+
+export function fetchBritishMuseumArtworks(page = 1, size = 20) {
+  const API_KEY = "hictaiev"; 
   const BASE_URL = "https://api.europeana.eu/record/v2/search.json";
 
   const params = {
     wskey: API_KEY,
-    query: 'who:"British Museum"',  // filter by British Museum
-    rows: 20,
-    profile: "rich",  // more metadata
+    query: 'who:"British Museum"', // Filter by British Museum
+    rows: size,
+    start: (page - 1) * size, // Start parameter for pagination
+    profile: "rich", // More metadata
   };
 
   return axios
     .get(BASE_URL, { params })
     .then((res) => {
-      // Map Europeana results to your desired format
       const records = res.data.items.map((item) => ({
         object: item.id,
         title: item.title ? item.title[0] : "No title",
@@ -62,42 +69,12 @@ export function fetchBritishMuseumArtworks() {
         date: item.year || "Unknown",
         image: item.edmIsShownBy ? item.edmIsShownBy : null,
       }));
-      return { records };
+      return { records, total: res.data.totalResults }; // Include total records for pagination
     })
     .catch((err) => {
       console.error("Error fetching Europeana artworks:", err.message);
-      return { records: [] };
+      return { records: [], total: 0 }; // Include total as 0 in case of error
     });
 }
 
 
-export function fetchTateModernArtworks() {
-  const API_KEY = " hictaiev"; 
-  const BASE_URL = "https://api.europeana.eu/record/v2/search.json";
-
-  const params = {
-    wskey: API_KEY,
-    query: 'who:"Tate Modern"',  // filter by British Museum
-    rows: 20,
-    profile: "rich",  // more metadata
-  };
-
-  return axios
-    .get(BASE_URL, { params })
-    .then((res) => {
-      // Map Europeana results to your desired format
-      const records = res.data.items.map((item) => ({
-        object: item.id,
-        title: item.title ? item.title[0] : "No title",
-        creator: item.dataProvider ? item.dataProvider : "Unknown",
-        date: item.year || "Unknown",
-        image: item.edmIsShownBy ? item.edmIsShownBy : null,
-      }));
-      return { records };
-    })
-    .catch((err) => {
-      console.error("Error fetching Europeana artworks:", err.message);
-      return { records: [] };
-    });
-}
-fetchBritishMuseumArtworks()
