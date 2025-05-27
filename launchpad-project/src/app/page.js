@@ -23,10 +23,10 @@ const museumsList = [
     institutionImg: "https://a.cdn-hotels.com/gdcs/production198/d432/d8d514b2-c526-45dc-aaa4-7839f4765ce0.jpg"
   },
   // {
-  //   name: "Tate Modern",
-  //   slug: "Tmodern",
-  //   logo: "https://i.pinimg.com/originals/55/fc/a3/55fca3c42834a5ede611ed381bf9a7f6.jpg",
-  //   institutionImg: "https://cdn.britannica.com/39/136939-050-4EFA1B8D/Tate-Modern-London.jpg"
+  //   name: "Musée du Louvre",
+  //   slug: "Louvre",
+  //   logo: "https://logodix.com/logo/792100.png",
+  //   institutionImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Louvre_Museum_Wikimedia_Commons.jpg/500px-Louvre_Museum_Wikimedia_Commons.jpg"
   // }
 
 ];

@@ -16,8 +16,9 @@ export function fetchHarvardArtworks(page = 1, size = 20) {
       },
     })
     .then((res) => {
+      console.log(res)
       const records = res.data.records.map(normalizeHarvard);
-      return { records, total: res.data.info.totalRecords }; // Include total records for pagination
+      return { records, total: res.data.info.totalrecords }; // Include total records for pagination
     })
     .catch((err) => {
       console.error("Error fetching Harvard artworks:", err.message);
@@ -26,17 +27,18 @@ export function fetchHarvardArtworks(page = 1, size = 20) {
 }
 
 
-export function fetchVandAArtworks(page = 1, size = 50, query = "") {
+export function fetchVandAArtworks(page = 1, size = 20, query = "") {
   const baseUrl = "https://api.vam.ac.uk/v2/objects/search";
   const url = `${baseUrl}?q=${encodeURIComponent(query)}&page_size=${size}&page=${page}`;
 
   return axios
     .get(url)
     .then((res) => {
+      console.log(res)
       const records = res.data.records.map(normalizeVandA);
       return {
         records,
-        total: res.data.info.hits || 0, // you might use this later for total pages
+        total: res.data.info.pages * size || 0, // you might use this later for total pages
       };
     })
     .catch((err) => {
@@ -55,13 +57,14 @@ export function fetchBritishMuseumArtworks(page = 1, size = 20) {
     wskey: API_KEY,
     query: 'who:"British Museum"', // Filter by British Museum
     rows: size,
-    start: (page - 1) * size, // Start parameter for pagination
+    start: (page) * size, // Start parameter for pagination
     profile: "rich", // More metadata
   };
 
   return axios
     .get(BASE_URL, { params })
     .then((res) => {
+      console.log(res)
       const records = res.data.items.map((item) => ({
         object: item.id,
         title: item.title ? item.title[0] : "No title",
@@ -76,5 +79,3 @@ export function fetchBritishMuseumArtworks(page = 1, size = 20) {
       return { records: [], total: 0 }; // Include total as 0 in case of error
     });
 }
-
-
