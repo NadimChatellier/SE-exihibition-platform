@@ -37,3 +37,38 @@ export function normalizeBritishMuseum(item) {
     source: "british-museum",
   };
 }
+
+
+
+
+export function normalizeVandAForDetail(record, meta) {
+  const imageBaseUrl = meta?._iiif_image || null;
+  const thumbnail = meta?._primary_thumbnail || null;
+  console.log("normalising the following", record, meta)
+  return {
+    id: record.systemNumber,
+  title: record.titles && record.titles.length > 0
+  ? record.titles[0].text || "Untitled"
+  : "Untitled",
+
+    description:
+      record.summaryDescription ||
+      record.briefDescription ||
+      "No description available.",
+    type: record.objectType || "Unknown type",
+    date:
+      record.productionDates?.[0]?.date.text ||
+      record.accessionYear?.toString() ||
+      "Unknown date",
+    place:
+      record.placesOfOrigin?.[0]?.name ||
+      record._currentLocation?.displayName ||
+      "Unknown location",
+    creator:
+      record.artistMakerPerson?.[0]?.name.text || "Unknown artist",
+    materials: record.materialsAndTechniques || "Unknown materials",
+    image: imageBaseUrl
+      ? `${imageBaseUrl}full/843,/0/default.jpg`
+      : thumbnail || null,
+  };
+}
