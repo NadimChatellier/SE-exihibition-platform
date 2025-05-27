@@ -114,7 +114,25 @@ useEffect(() => {
     <div>
       <Navbar />
       <div className="min-h-screen px-8 py-16 sm:px-20">
-        <h1 className="text-3xl font-bold mb-10 text-center">
+      
+
+
+
+        {loading ? (
+          <div className="flex items-center justify-center h-screen flex-col">
+            <DotLottieReact
+              src="https://lottie.host/2def65ab-c928-42b9-8832-1443e943516f/9zSNgMlMX6.lottie"
+              loop
+              autoplay
+              style={{ width: 400, height: 400 }}
+            />
+            <p className="text-lg text-gray-300 mt-4">
+              Loading works of art...
+            </p>
+          </div>
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold mb-10 text-center">
           {museumKey ? `Gallery for ${museumKey}` : "Gallery"}
         </h1>
 <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
@@ -172,23 +190,6 @@ useEffect(() => {
 
   
 </div>
-
-
-
-        {loading ? (
-          <div className="flex items-center justify-center h-screen flex-col">
-            <DotLottieReact
-              src="https://lottie.host/2def65ab-c928-42b9-8832-1443e943516f/9zSNgMlMX6.lottie"
-              loop
-              autoplay
-              style={{ width: 400, height: 400 }}
-            />
-            <p className="text-lg text-gray-300 mt-4">
-              Loading works of art...
-            </p>
-          </div>
-        ) : (
-          <>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {artworks.map((art) => (
                 <ArtworkCard key={art.id} art={art} />
