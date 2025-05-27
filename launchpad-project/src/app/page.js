@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "./components/navbar";
+import Image from "next/image";
 const museumsList = [
   {
     name: "Victoria and Albert Museum",
