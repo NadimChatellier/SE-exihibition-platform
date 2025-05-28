@@ -54,32 +54,20 @@ useEffect(() => {
   setLoading(true);
   setError(null);
 
-  const combinedQuery = `${typeFilter} ${searchTerm}`.trim();
+  lookupMap[museumKey](page, pageSize, typeFilter, searchTerm)
+    .then((data) => {
+      setArtworks(data.records);
+      setTotalPages(Math.ceil(data.total / pageSize));
+      setLoading(false);
+    })
+    .catch(() => {
+      setError("Failed to fetch artworks");
+      setLoading(false);
+    });
 
-  if (museumKey === "VandA") {
-    fetchVandAArtworks(page, pageSize, combinedQuery)
-      .then((data) => {
-        setArtworks(data.records);
-        setTotalPages(Math.ceil(data.total / pageSize));
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to fetch artworks");
-        setLoading(false);
-      });
-  } else {
-    lookupMap[museumKey](page)
-      .then((data) => {
-        setArtworks(data.records);
-        setTotalPages(Math.ceil(data.total / pageSize));
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to fetch artworks");
-        setLoading(false);
-      });
-  }
 }, [museumKey, page, typeFilter, searchTerm]);
+
+
 
 
 

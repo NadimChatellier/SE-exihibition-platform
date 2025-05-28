@@ -1,10 +1,12 @@
 import axios from "axios";
-import { normalizeBritishMuseum, normalizeHarvard, normalizeVandA, normalizeVandAForDetail} from "./normalize.js";
-
+import { normalizeBritishMuseum, normalizeHarvard, normalizeHarvardForDetail, normalizeVandA, normalizeVandAForDetail} from "./normalize.js";
+import { buildHarvardQuery } from "./helperFunctions.js";
 
 const API_KEY = process.env.NEXT_PUBLIC_HARVARD_API_KEY || "57bea388-3f95-4dc3-bb9c-48f8ec9123f4"; // Use env variable if set
 
-export function fetchHarvardArtworks(page = 1, size = 20) {
+export function fetchHarvardArtworks(page = 1, size = 20, typeFilter = "", searchTerm = "") {
+  const query = buildHarvardQuery(typeFilter, searchTerm);
+
   return axios
     .get("https://api.harvardartmuseums.org/object", {
       params: {
@@ -13,21 +15,23 @@ export function fetchHarvardArtworks(page = 1, size = 20) {
         size,
         hasimage: 1,
         sort: "rank",
+        q: query || undefined,
       },
     })
     .then((res) => {
-      console.log(res)
       const records = res.data.records.map(normalizeHarvard);
-      return { records, total: res.data.info.totalrecords }; // Include total records for pagination
+      return { records, total: res.data.info.totalrecords };
     })
     .catch((err) => {
       console.error("Error fetching Harvard artworks:", err.message);
-      return { records: [], total: 0 }; // Include total as 0 in case of error
+      return { records: [], total: 0 };
     });
 }
 
 
-export function fetchVandAArtworks(page = 1, size = 20, query = "") {
+
+export function fetchVandAArtworks(page = 1, size = 20, typeFilter = "", searchTerm = "") {
+  const query = `${typeFilter} ${searchTerm}`.trim();
   const baseUrl = "https://api.vam.ac.uk/v2/objects/search";
   const url = `${baseUrl}?q=${encodeURIComponent(query)}&page_size=${size}&page=${page}`;
 
@@ -80,28 +84,6 @@ export function fetchBritishMuseumArtworks(page = 1, size = 20) {
     });
 }
 
-
-
-
-
-export function fetchHarvardArtworkById(id) {
-  console.log("fetching harvard")
-  return axios
-    .get(`https://api.harvardartmuseums.org/object/${id}`, {
-      params: {
-        apikey: API_KEY,
-      },
-    })
-    .then((res) =>{
-      console.log(res.data)
-      normalizeHarvard(res.data)
-    } )
-    .catch((err) => {
-      console.error(`Error fetching Harvard artwork by ID ${id}:`, err.message);
-      return null;
-    });
-}
-
 export function fetchVandAArtworkById(id) {
   console.log("Fetching V&A artwork by ID");
   const url = `https://api.vam.ac.uk/v2/museumobject/${id}`;
@@ -122,36 +104,21 @@ export function fetchVandAArtworkById(id) {
 }
 
 
-
-
-export function fetchBritishMuseumArtworkById(id) {
-  const API_KEY = "hictaiev";
-  const BASE_URL = "https://api.europeana.eu/record/v2/search.json";
-
-  const params = {
-    wskey: API_KEY,
-    query: `id:"${id}"`,
-    rows: 1,
-    profile: "rich",
-  };
-
-  return axios
-    .get(BASE_URL, { params })
-    .then((res) => {
-      const item = res.data.items?.[0];
-      if (!item) return null;
-      return {
-        object: item.id,
-        title: item.title?.[0] || "No title",
-        creator: item.dataProvider || "Unknown",
-        date: item.year || "Unknown",
-        image: item.edmIsShownBy || null,
-      };
-    })
-    .catch((err) => {
-      console.error(`Error fetching British Museum artwork by ID ${id}:`, err.message);
-      return null;
-    });
+export async function fetchHarvardArtworkById(id) {
+    const url = `https://api.harvardartmuseums.org/object/${id}?apikey=${API_KEY}`;
+    console.log("attempting: ", url)
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(normalizeHarvardForDetail(data))
+        return normalizeHarvardForDetail(data);
+    } catch (error) {
+        console.error("Error fetching Harvard object:", error);
+        return null;
+    }
 }
 
 

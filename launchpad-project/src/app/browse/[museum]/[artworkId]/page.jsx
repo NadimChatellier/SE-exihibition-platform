@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { fetchBritishMuseumArtworkById, fetchHarvardArtworkById, fetchVandAArtworkById } from '@/lib/API/requests';
+import { fetchHarvardArtworkById, fetchVandAArtworkById } from '@/lib/API/requests';
 import Navbar from '@/app/components/navbar';
 
 export default function ArtworkDetailClient() {
@@ -16,7 +16,8 @@ const [modalOpen, setModalOpen] = useState(false);
       if (!museum || !artworkId) return;
 
       let data;
-      if (museum === "Harvard") {
+      if (museum === "harvard") {
+        console.log("passing this id: ", artworkId)
         data = await fetchHarvardArtworkById(artworkId);
       } else if (museum === "vam") {
         data = await fetchVandAArtworkById(artworkId);

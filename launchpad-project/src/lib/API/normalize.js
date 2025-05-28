@@ -72,3 +72,35 @@ export function normalizeVandAForDetail(record, meta) {
       : thumbnail || null,
   };
 }
+
+
+export function normalizeHarvardForDetail(record) {
+  console.log("normalising the following", record);
+
+  return {
+    id: record.id,
+    title: record.title || "Untitled",
+
+    description:
+      record.description || record.creditline || "No description available.",
+
+    type: record.classification || record.medium || "Unknown type",
+
+    date:
+      record.dated ||
+      record.accessionyear?.toString() ||
+      "Unknown date",
+
+    place:
+      record.place || record.culture || "Unknown location",
+
+    creator:
+      record.people?.[0]?.name || "Unknown artist",
+
+    materials:
+      record.medium || record.technique || "Unknown materials",
+
+    image:
+      record.primaryimageurl || record.baseimageurl || null,
+  };
+}
