@@ -2,6 +2,7 @@ import axios from "axios";
 import { normalizeBritishMuseum, normalizeHarvard, normalizeHarvardForDetail, normalizeVandA, normalizeVandAForDetail} from "./normalize.js";
 import { buildHarvardQuery } from "./helperFunctions.js";
 
+//change
 const API_KEY = process.env.NEXT_PUBLIC_HARVARD_API_KEY || "57bea388-3f95-4dc3-bb9c-48f8ec9123f4"; // Use env variable if set
 
 export function fetchHarvardArtworks(page = 1, size = 20, typeFilter = "", searchTerm = "") {
