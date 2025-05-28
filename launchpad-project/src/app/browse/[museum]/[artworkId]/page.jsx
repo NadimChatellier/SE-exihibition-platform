@@ -1,5 +1,5 @@
 'use client';
-
+//test
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchHarvardArtworkById, fetchVandAArtworkById } from '@/lib/API/requests';
