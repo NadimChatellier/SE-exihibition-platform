@@ -186,18 +186,7 @@ useEffect(() => {
 
             <Pagination className="mt-12">
               <PaginationContent>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage(1);
-                    }}
-                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
-                  >
-                    First
-                  </PaginationLink>
-                </PaginationItem>
+                
 
                 <PaginationItem>
                   <PaginationPrevious
@@ -210,9 +199,25 @@ useEffect(() => {
                 </PaginationItem>
 
                 {page > 3 && (
+                  <>     <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(1);
+                    }}
+                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                  >
+                    1
+                  </PaginationLink>
+                </PaginationItem>
+
                   <PaginationItem>
                     <PaginationEllipsis />
                   </PaginationItem>
+                  
+                  </>
+             
                 )}
 
                 {getPageNumbers(page, totalPages).map((p) => (
