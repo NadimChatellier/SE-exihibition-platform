@@ -36,7 +36,7 @@ export default function Home() {
       <Navbar />
       <div className="px-6 py-16 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-10">
-          Explore the World's Greatest Museums
+          {`Explore the World's Greatest Museums`}
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-16 max-w-2xl mx-auto">
           Discover stunning collections from top institutions across the globe.
