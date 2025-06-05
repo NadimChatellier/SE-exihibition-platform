@@ -20,6 +20,7 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 
 import { createNewCollection } from "@/lib/firebaseHelpers/helpers";
+import Navbar from "@/app/components/navbar";
 
 const db = getFirestore();
 const storage = getStorage();
@@ -39,6 +40,7 @@ export default function UserPage() {
   // Collections state
   const [collections, setCollections] = useState([]);
   const [newCollectionTitle, setNewCollectionTitle] = useState("");
+  console.log("User", user);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -87,7 +89,10 @@ export default function UserPage() {
   };
 
   return (
-    <main className="min-h-screen max-w-3xl mx-auto bg-white p-8 rounded shadow-md mt-10">
+    <div>
+        <Navbar />
+         <main className="min-h-screen max-w-3xl mx-auto bg-white p-8 rounded shadow-md mt-10">
+        
       <h1 className="text-4xl font-bold mb-8 text-gray-900">Edit Your Profile</h1>
 
       <section className="mb-10">
@@ -165,5 +170,7 @@ export default function UserPage() {
         )}
       </section>
     </main>
+    </div>
+   
   );
 }
