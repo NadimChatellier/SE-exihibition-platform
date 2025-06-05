@@ -21,9 +21,10 @@ const [modalOpen, setModalOpen] = useState(false);
         data = await fetchHarvardArtworkById(artworkId);
       } else if (museum === "vam") {
         data = await fetchVandAArtworkById(artworkId);
-      } else if (museum === "BritishMuseum") {
-        data = await fetchBritishMuseumArtworkById(artworkId);
       }
+      //  else if (museum === "BritishMuseum") {
+      //   data = await fetchBritishMuseumArtworkById(artworkId);
+      // }
       setArt(data);
       setVisible(true);
     }

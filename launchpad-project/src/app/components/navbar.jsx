@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-
+import { UserCircle } from "lucide-react"; // simple user icon
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,6 +13,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { getAuth } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const museums = [
   {
@@ -26,7 +30,28 @@ const museums = [
   },
 ];
 
+
+
+// (keep all your current imports here)
+
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+  
+    return () => unsubscribe();
+  }, []);
+
   return (
     <nav className="w-full bg-gray-900 shadow-md">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16">
@@ -39,55 +64,41 @@ export default function Navbar() {
             ArtGallery
           </Link>
 
-          {/* Navigation Menu */}
-          <NavigationMenu>
-          <NavigationMenuList >
+          {/* Navigation */}
+          <div className="flex items-center gap-6">
+            {/* Dropdown Menu */}
+           
 
-              <NavigationMenuItem>
-                <NavigationMenuTrigger
-                  className="
-                    bg-gray-800 text-gray-300 
-                    hover:bg-gray-700 hover:text-blue-400
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 
-                    dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-blue-400
-                    transition-colors duration-200 rounded-md px-3 py-1
-                  "
-                >
-                  Museums
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="bg-gray-800 rounded-md shadow-lg border border-gray-700 p-4">
-                  <ul className="grid gap-3 md:w-[300px]">
-                    {museums.map(({ name, href, description }) => (
-                      <ListItem key={name} href={href} title={name}>
-                        {description}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+            {/* Sign In / Profile Icon */}
+            {user ? (<>
+              <Link
+  href={`/user/${user.uid}`} // <- dynamic route based on user ID
+  className="flex items-center gap-2 text-gray-300 hover:text-blue-400"
+>
+  <img
+    src={user.photoURL || "/images/765-default-avatar.png"}
+    alt="User Avatar"
+    className="w-6 h-6 rounded-full object-cover"
+  />
+</Link>
+
+              <button
+  onClick={() => signOut(auth)}
+  className="text-sm text-red-400 hover:text-red-300"
+>
+  Logout
+</button>
+            </>
+              
+
+            ) : (
+              <Link href="/login" className="text-gray-300 hover:text-blue-400 text-sm">
+                Sign In
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>
   );
 }
-
-const ListItem = React.forwardRef(({ className, title, children, ...props }, ref) => (
-  <li>
-    <NavigationMenuLink asChild>
-      <a
-        ref={ref}
-        className={cn(
-          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white",
-          className
-        )}
-        {...props}
-      >
-        <div className="text-sm font-semibold leading-none text-gray-200">{title}</div>
-        <p className="line-clamp-2 text-sm leading-snug text-gray-300">{children}</p>
-      </a>
-    </NavigationMenuLink>
-  </li>
-));
-ListItem.displayName = "ListItem";

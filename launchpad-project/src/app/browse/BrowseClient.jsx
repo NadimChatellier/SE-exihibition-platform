@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import {
   fetchVandAArtworks,
   fetchHarvardArtworks,
-  fetchBritishMuseumArtworks,
+  // fetchBritishMuseumArtworks,
   fetchLouvreArtworks,
 } from "@/lib/API/requests";
 import ArtworkCard from "../components/artworkCard";
@@ -26,7 +26,7 @@ import {
 const lookupMap = {
   VandA: fetchVandAArtworks,
   Harvard: fetchHarvardArtworks,
-  BritishMuseum: fetchBritishMuseumArtworks,
+  // BritishMuseum: fetchBritishMuseumArtworks,
 };
 
 export default function BrowseClient() {

@@ -16,12 +16,14 @@ const museumsList = [
     logo: "https://1000logos.net/wp-content/uploads/2017/02/Harvard-Logo.png",
     background: "http://4.bp.blogspot.com/-e9bUEPvkzbg/Tha7GtBxj4I/AAAAAAAAI3k/QcgT3HpwUp8/s1600/Harvard%2BUniversity%2BUSA%2BWallpapers%2Bby%2Bcool%2Bwallpapers%2B%25281%2529.jpg",
   },
-  {
-    name: "The British Museum",
-    slug: "BritishMuseum",
-    logo: "https://logowik.com/content/uploads/images/the-british-museum3412.logowik.com.webp",
-    background: "https://a.cdn-hotels.com/gdcs/production198/d432/d8d514b2-c526-45dc-aaa4-7839f4765ce0.jpg",
-  },
+
+  // british museum too hard to get right now
+  // {
+  //   name: "The British Museum",
+  //   slug: "BritishMuseum",
+  //   logo: "https://logowik.com/content/uploads/images/the-british-museum3412.logowik.com.webp",
+  //   background: "https://a.cdn-hotels.com/gdcs/production198/d432/d8d514b2-c526-45dc-aaa4-7839f4765ce0.jpg",
+  // },
 ];
 
 export default function Home() {

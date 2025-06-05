@@ -27,16 +27,16 @@ export function normalizeHarvard(item) {
   };
 }
 
-export function normalizeBritishMuseum(item) {
-  return {
-    id: item.object.value,
-    title: item.title?.value || "Untitled",
-    image: item.image?.value || null,
-    artist: item.creator?.value || "Unknown Artist",
-    date: item.date?.value || "Date Unknown",
-    source: "british-museum",
-  };
-}
+// export function normalizeBritishMuseum(item) {
+//   return {
+//     id: item.object.value,
+//     title: item.title?.value || "Untitled",
+//     image: item.image?.value || null,
+//     artist: item.creator?.value || "Unknown Artist",
+//     date: item.date?.value || "Date Unknown",
+//     source: "british-museum",
+//   };
+// }
 
 
 
