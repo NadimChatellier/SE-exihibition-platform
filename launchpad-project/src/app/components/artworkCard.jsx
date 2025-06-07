@@ -12,12 +12,12 @@ export default function ArtworkCard({ art, collections = [], onAddToCollection, 
     setShowModal(false);
   };
 
-
   const handleCreate = async (title) => {
-    const newCollection = await onAddToCollection(art, null, title, username);
+    const newCollection = await onAddToCollection(art, null, title);
     setShowModal(false);
   };
-  console.log("ArtworkCard", art);
+
+  
   return (
     <>
       <div className="group border rounded-2xl shadow p-4 flex flex-col bg-white dark:bg-zinc-900 transition transform hover:scale-[1.02] cursor-pointer">

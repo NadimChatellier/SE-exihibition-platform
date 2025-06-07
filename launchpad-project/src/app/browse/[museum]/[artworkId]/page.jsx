@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchHarvardArtworkById, fetchVandAArtworkById } from '@/lib/API/requests';
 import Navbar from '@/app/components/navbar';
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function ArtworkDetailClient() {
   const { museum, artworkId } = useParams();
@@ -31,7 +32,17 @@ const [modalOpen, setModalOpen] = useState(false);
     load();
   }, [museum, artworkId]);
 
-  if (!art) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  if (!art) return <div className="flex items-center justify-center h-screen flex-col">
+            <DotLottieReact
+              src="https://lottie.host/2def65ab-c928-42b9-8832-1443e943516f/9zSNgMlMX6.lottie"
+              loop
+              autoplay
+              style={{ width: 400, height: 400 }}
+            />
+            <p className="text-lg text-gray-300 mt-4">
+              Loading works of art...
+            </p>
+          </div>;
 
   return (<><Navbar />
 
