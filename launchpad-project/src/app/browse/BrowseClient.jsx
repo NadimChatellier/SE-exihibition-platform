@@ -180,7 +180,7 @@ useEffect(() => {
 </div>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {artworks.map((art) => (
-                <ArtworkCard key={art.id} art={art} />
+                <ArtworkCard key={art.id} art={art} username={username} />
               ))}
             </div>
 
@@ -245,7 +245,7 @@ useEffect(() => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          setPage(totalPages - 1);
+                          setPage(totalPages);
                         }}
                         className={page === totalPages ? "pointer-events-none opacity-50" : ""}
                       >

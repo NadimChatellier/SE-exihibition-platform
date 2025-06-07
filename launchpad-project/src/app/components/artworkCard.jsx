@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import CollectionModal from "./collectionModal"; // Adjust the import path as necessary
 
-export default function ArtworkCard({ art, collections = [], onAddToCollection }) {
+export default function ArtworkCard({ art, collections = [], onAddToCollection, username }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleSelect = (collection) => {
@@ -12,8 +12,9 @@ export default function ArtworkCard({ art, collections = [], onAddToCollection }
     setShowModal(false);
   };
 
+
   const handleCreate = async (title) => {
-    const newCollection = await onAddToCollection(art, null, title);
+    const newCollection = await onAddToCollection(art, null, title, username);
     setShowModal(false);
   };
   console.log("ArtworkCard", art);
