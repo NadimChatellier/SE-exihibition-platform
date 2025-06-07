@@ -180,7 +180,7 @@ useEffect(() => {
 </div>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {artworks.map((art) => (
-                <ArtworkCard key={art.id} art={art} username={username} />
+                <ArtworkCard key={art.id} art={art} />
               ))}
             </div>
 

@@ -40,7 +40,7 @@ const [modalOpen, setModalOpen] = useState(false);
               style={{ width: 400, height: 400 }}
             />
             <p className="text-lg text-gray-300 mt-4">
-              Loading works of art...
+              Loading work of art...
             </p>
           </div>;
 
