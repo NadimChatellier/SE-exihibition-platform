@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import {
   fetchVandAArtworks,
   fetchHarvardArtworks,
-  // fetchBritishMuseumArtworks,
   fetchLouvreArtworks,
 } from "@/lib/API/requests";
 import ArtworkCard from "../components/artworkCard";
@@ -29,6 +28,12 @@ const lookupMap = {
   // BritishMuseum: fetchBritishMuseumArtworks,
 };
 
+const museumNameMap = {
+  VandA: "the Victoria and Albert Museum",
+  Harvard: "the Harvard Art Museums",
+};
+
+
 export default function BrowseClient() {
   const searchParams = useSearchParams();
   const museumKey = searchParams.get("museum");
@@ -38,39 +43,33 @@ export default function BrowseClient() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
- const [typeFilter, setTypeFilter] = useState("");
-const [searchInput, setSearchInput] = useState("");
-const [searchTerm, setSearchTerm] = useState("");
-
+  const [typeFilter, setTypeFilter] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const pageSize = 20;
 
-useEffect(() => {
-  if (!museumKey || !lookupMap[museumKey]) {
-    setError("Museum not found or not supported");
-    return;
-  }
+  useEffect(() => {
+    if (!museumKey || !lookupMap[museumKey]) {
+      setError("Museum not found or not supported");
+      return;
+    }
 
-  setLoading(true);
-  setError(null);
+    setLoading(true);
+    setError(null);
 
-  lookupMap[museumKey](page, pageSize, typeFilter, searchTerm)
-    .then((data) => {
-      setArtworks(data.records);
-      setTotalPages(Math.ceil(data.total / pageSize));
-      setLoading(false);
-    })
-    .catch(() => {
-      setError("Failed to fetch artworks");
-      setLoading(false);
-    });
+    lookupMap[museumKey](page, pageSize, typeFilter, searchTerm)
+      .then((data) => {
+        setArtworks(data.records);
+        setTotalPages(Math.ceil(data.total / pageSize));
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to fetch artworks");
+        setLoading(false);
+      });
 
-}, [museumKey, page, typeFilter, searchTerm]);
-
-
-
-
-
+  }, [museumKey, page, typeFilter, searchTerm]);
 
   function getPageNumbers(current, total, maxVisible = 5) {
     const pages = [];
@@ -102,10 +101,6 @@ useEffect(() => {
     <div>
       <Navbar />
       <div className="min-h-screen px-8 py-16 sm:px-20">
-      
-
-
-
         {loading ? (
           <div className="flex items-center justify-center h-screen flex-col">
             <DotLottieReact
@@ -121,151 +116,161 @@ useEffect(() => {
         ) : (
           <>
             <h1 className="text-3xl font-bold mb-10 text-center">
-          {museumKey ? `Gallery for ${museumKey}` : "Gallery"}
-        </h1>
-<div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-  <div className="flex flex-col sm:flex-row gap-4">
-    {/* Dropdown Filter */}
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        Filter by Type
-      </label>
-      <select
-        value={typeFilter}
-        onChange={(e) => {
-          setTypeFilter(e.target.value);
-          setPage(1);
-        }}
-        className="border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      >
-        <option value="">All</option>
-        <option value="painting">Painting</option>
-        <option value="sculpture">Sculpture</option>
-        <option value="textile">Textile</option>
-        <option value="ceramic">Ceramic</option>
-        <option value="photograph">Photograph</option>
-      </select>
-    </div>
+            {museumKey ? `Gallery for ${museumNameMap[museumKey] || museumKey}` : "Gallery"}
 
- {/* Search Bar */}
-<div className="flex gap-2">
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
-      Search by Keyword
-    </label>
-    <input
-      type="text"
-      placeholder="e.g. vase, Monet..."
-      value={searchInput}
-      onChange={(e) => setSearchInput(e.target.value)}
-      className="border border-gray-300 rounded-md px-4 py-2 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    />
-  </div>
-  <div className="self-end pb-1">
-    <button
-      onClick={() => {
-        setSearchTerm(searchInput);
-        setPage(1);
-      }}
-      className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
-    >
-      Search
-    </button>
-  </div>
-</div>
+            </h1>
 
-  </div>
-
-  
-</div>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {artworks.map((art) => (
-                <ArtworkCard key={art.id} art={art} />
-              ))}
-            </div>
-
-            <Pagination className="mt-12">
-              <PaginationContent>
-                
-
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage((p) => Math.max(1, p - 1));
-                    }}
-                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-
-                {page > 3 && (
-                  <>     <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Filter by Type
+                  </label>
+                  <select
+                    value={typeFilter}
+                    onChange={(e) => {
+                      setTypeFilter(e.target.value);
                       setPage(1);
                     }}
-                    className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                    className="border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    1
-                  </PaginationLink>
-                </PaginationItem>
+                    <option value="">All</option>
+                    <option value="painting">Painting</option>
+                    <option value="sculpture">Sculpture</option>
+                    <option value="textile">Textile</option>
+                    <option value="ceramic">Ceramic</option>
+                    <option value="photograph">Photograph</option>
+                  </select>
+                </div>
 
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  
-                  </>
-             
-                )}
-
-                {getPageNumbers(page, totalPages).map((p) => (
-                  <PaginationItem key={p}>
-                    <PaginationLink
-                      isActive={p === page}
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPage(p);
+                {/* Search */}
+                <div className="flex gap-2">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Search by Keyword
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. vase, Monet..."
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="border border-gray-300 rounded-md px-4 py-2 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <div className="self-end pb-1">
+                    <button
+                      onClick={() => {
+                        setSearchTerm(searchInput);
+                        setPage(1);
                       }}
+                      className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
                     >
-                      {p}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                {page < totalPages - 2 && (
-                  <>
+            {/* No Results Message */}
+            {artworks.length === 0 ? (
+              <div className="text-center mt-20">
+                <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300">
+                  No artworks found
+                </h2>
+                <p className="text-gray-500 mt-2">
+                  Try a different keyword or filter.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {artworks.map((art) => (
+                    <ArtworkCard key={art.id} art={art} />
+                  ))}
+                </div>
+
+                <Pagination className="mt-12">
+                  <PaginationContent>
                     <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#"
+                      <PaginationPrevious
                         onClick={(e) => {
                           e.preventDefault();
-                          setPage(totalPages);
+                          setPage((p) => Math.max(1, p - 1));
+                        }}
+                        className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+
+                    {page > 3 && (
+                      <>
+                        <PaginationItem>
+                          <PaginationLink
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setPage(1);
+                            }}
+                            className={page === 1 ? "pointer-events-none opacity-50" : ""}
+                          >
+                            1
+                          </PaginationLink>
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      </>
+                    )}
+
+                    {getPageNumbers(page, totalPages).map((p) => (
+                      <PaginationItem key={p}>
+                        <PaginationLink
+                          isActive={p === page}
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setPage(p);
+                          }}
+                        >
+                          {p}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+
+                    {page < totalPages - 2 && (
+                      <>
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                        <PaginationItem>
+                          <PaginationLink
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setPage(totalPages);
+                            }}
+                            className={page === totalPages ? "pointer-events-none opacity-50" : ""}
+                          >
+                            {totalPages}
+                          </PaginationLink>
+                        </PaginationItem>
+                      </>
+                    )}
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setPage(page + 1);
                         }}
                         className={page === totalPages ? "pointer-events-none opacity-50" : ""}
-                      >
-                        {totalPages}
-                      </PaginationLink>
+                      />
                     </PaginationItem>
-                  </>
-                )}
-
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage(page + 1);
-                    }}
-                    className={page === totalPages ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+                  </PaginationContent>
+                </Pagination>
+              </>
+            )}
           </>
         )}
       </div>
