@@ -1,9 +1,9 @@
 import axios from "axios";
-import { normalizeBritishMuseum, normalizeHarvard, normalizeHarvardForDetail, normalizeVandA, normalizeVandAForDetail} from "./normalize.js";
+import {normalizeHarvard, normalizeHarvardForDetail, normalizeVandA, normalizeVandAForDetail} from "./normalize.js";
 import { buildHarvardQuery } from "./helperFunctions.js";
 
 //change
-const API_KEY = process.env.NEXT_PUBLIC_HARVARD_API_KEY || "57bea388-3f95-4dc3-bb9c-48f8ec9123f4"; // Use env variable if set
+const API_KEY = process.env.NEXT_PUBLIC_HARVARD_API_KEY;
 
 export function fetchHarvardArtworks(page = 1, size = 20, typeFilter = "", searchTerm = "") {
   const query = buildHarvardQuery(typeFilter, searchTerm);
@@ -54,36 +54,6 @@ export function fetchVandAArtworks(page = 1, size = 20, typeFilter = "", searchT
 
 
 
-// export function fetchBritishMuseumArtworks(page = 1, size = 20) {
-//   const API_KEY = "hictaiev"; 
-//   const BASE_URL = "https://api.europeana.eu/record/v2/search.json";
-
-//   const params = {
-//     wskey: API_KEY,
-//     query: 'who:"British Museum"', // Filter by British Museum
-//     rows: size,
-//     start: (page) * size, // Start parameter for pagination
-//     profile: "rich", // More metadata
-//   };
-
-//   return axios
-//     .get(BASE_URL, { params })
-//     .then((res) => {
-//       console.log(res)
-//       const records = res.data.items.map((item) => ({
-//         object: item.id,
-//         title: item.title ? item.title[0] : "No title",
-//         creator: item.dataProvider ? item.dataProvider : "Unknown",
-//         date: item.year || "Unknown",
-//         image: item.edmIsShownBy ? item.edmIsShownBy : null,
-//       }));
-//       return { records, total: res.data.totalResults }; // Include total records for pagination
-//     })
-//     .catch((err) => {
-//       console.error("Error fetching Europeana artworks:", err.message);
-//       return { records: [], total: 0 }; // Include total as 0 in case of error
-//     });
-// }
 
 export function fetchVandAArtworkById(id) {
   console.log("Fetching V&A artwork by ID");
