@@ -1,11 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import CollectionModal from "./collectionModal"; // Adjust the import path as necessary
+import { useEffect, useState } from "react";
+import CollectionModal from "./collectionModal"; // Adjust path if needed
+import { auth } from "@/lib/firebase";
 
-export default function ArtworkCard({ art, collections = [], onAddToCollection, username }) {
+export default function ArtworkCard({ art, collections = [], onAddToCollection }) {
   const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Set user on initial render
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      setUser(firebaseUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleSelect = (collection) => {
     onAddToCollection(art, collection);
@@ -17,7 +28,6 @@ export default function ArtworkCard({ art, collections = [], onAddToCollection, 
     setShowModal(false);
   };
 
-  
   return (
     <>
       <div className="group border rounded-2xl shadow p-4 flex flex-col bg-white dark:bg-zinc-900 transition transform hover:scale-[1.02] cursor-pointer">
@@ -44,12 +54,17 @@ export default function ArtworkCard({ art, collections = [], onAddToCollection, 
           </div>
         </Link>
 
-        <button
-          onClick={() => setShowModal(true)}
-          className="mt-4 text-sm bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
-        >
-          Add to Collection
-        </button>
+        {user && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowModal(true);
+            }}
+            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition"
+          >
+            Add to Collection
+          </button>
+        )}
       </div>
 
       <CollectionModal
