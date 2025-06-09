@@ -17,13 +17,6 @@ const museumsList = [
     background: "http://4.bp.blogspot.com/-e9bUEPvkzbg/Tha7GtBxj4I/AAAAAAAAI3k/QcgT3HpwUp8/s1600/Harvard%2BUniversity%2BUSA%2BWallpapers%2Bby%2Bcool%2Bwallpapers%2B%25281%2529.jpg",
   },
 
-  // british museum too hard to get right now
-  // {
-  //   name: "The British Museum",
-  //   slug: "BritishMuseum",
-  //   logo: "https://logowik.com/content/uploads/images/the-british-museum3412.logowik.com.webp",
-  //   background: "https://a.cdn-hotels.com/gdcs/production198/d432/d8d514b2-c526-45dc-aaa4-7839f4765ce0.jpg",
-  // },
 ];
 
 export default function Home() {
@@ -36,15 +29,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
-      <div className="px-6 py-16 text-center">
+      <div className="px-6 py-16 text-center mt-20">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-10">
           {`Explore the World's Greatest Museums`}
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-16 max-w-2xl mx-auto">
-          Discover stunning collections from top institutions across the globe.
+          Discover stunning collections from top institutions across the globe. Click on a museum to start your journey through art and history.
         </p>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+        <div className="flex flex-wrap justify-center gap-24">
           {museumsList.map((museum) => (
             <button
               key={museum.slug}

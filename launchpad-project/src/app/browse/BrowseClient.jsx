@@ -25,7 +25,6 @@ import {
 const lookupMap = {
   VandA: fetchVandAArtworks,
   Harvard: fetchHarvardArtworks,
-  // BritishMuseum: fetchBritishMuseumArtworks,
 };
 
 const museumNameMap = {
@@ -100,7 +99,7 @@ export default function BrowseClient() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen px-8 py-16 sm:px-20">
+      <div className="min-h-screen px-8 py-16 sm:px-20 mt-20">
         {loading ? (
           <div className="flex items-center justify-center h-screen flex-col">
             <DotLottieReact

@@ -56,7 +56,7 @@ export default function CollectionPage() {
       {/* Background Blur */}
       {bannerImage && (
         <div
-          className="absolute inset-0 z-0 bg-cover bg-center blur-xl opacity-30"
+          className="absolute inset-0 z-[-1] bg-cover bg-center blur-xl opacity-30"
           style={{ backgroundImage: `url(${bannerImage})` }}
         />
       )}
@@ -64,9 +64,6 @@ export default function CollectionPage() {
       {/* Hero */}
       <div className="relative z-10 py-20 px-6 text-center text-white bg-gradient-to-b from-black/60 to-transparent">
         <h1 className="text-5xl font-bold mb-4 drop-shadow-md">{collection.title}</h1>
-        <p className="text-lg max-w-2xl mx-auto text-gray-200 drop-shadow-sm">
-          {collection.description || "No description provided."}
-        </p>
       </div>
 
       {/* Grid of Artworks */}
