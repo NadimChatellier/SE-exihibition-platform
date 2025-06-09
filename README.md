@@ -1,9 +1,17 @@
 # SE-exihibition-platform
 
-![image](https://github.com/user-attachments/assets/7ef9de58-58f4-43cf-870a-2b1e0ae606c5)
+![image](https://github.com/user-attachments/assets/7e176dca-c81a-4c11-bd42-3d6dd39fab31)
+
 
 Check out my latest project!
-This is a platform where you can see works of art from some of the world's most important museums.
+This is a platform where you can save, add and admire artworks from museums!
+Be on the lookout if your favourite museum becomes available!
+
+![image](https://github.com/user-attachments/assets/45d36cce-5660-478d-8727-2d9bd637d7dd)
+
+![image](https://github.com/user-attachments/assets/1fac006b-9dea-4f95-981c-23e966aa4460)
+
+
 
 # https://se-exihibition-platform-git-main-nadimchatelliers-projects.vercel.app/
 
